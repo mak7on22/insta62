@@ -1,0 +1,38 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+.search {
+  display: flex;
+
+}
+.underline[b-s29hfuabq2] {
+  position: fixed;
+  z-index: 2;
+  top: 50px;
+}
+.animations {
+  display: flex;
+  align-items: center;
+}
+
+.animations:hover .texts {
+  color: black;
+  font-weight: bold;
+  font-size: x-large;
+}
+

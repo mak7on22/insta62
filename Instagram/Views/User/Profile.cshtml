@@ -1,0 +1,292 @@
+@model Instagram.Models.User
+@using System.Security.Claims;
+
+<head>
+	<meta charset="UTF-8">
+	<title>Instagram</title>
+	<link rel="stylesheet" href="~/css/Lks.css">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<header class="container">
+	<div class="panels">
+		<div class="dd">
+			<div class="imj">
+				<label asp-for="Avatar" class="control-label textDel"></label>
+				<img class="images" src="@Url.Content(Model.Avatar)" alt="Изображение"/>
+			</div>
+			<div class="fff">
+				<div class="ff" id="s1">
+					<div class="flog">
+						<div class="log">
+							<h3 class="Username">@Model.UserName</h3>
+						</div>
+						<div class="Edit">
+							 @if (User.Identity.IsAuthenticated && Model.Id == Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)))
+                             {
+                             <a asp-controller="User" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary btt">Редактировать профиль</a>
+                             }
+						</div>
+					</div>
+					<div class="sss">
+						<div class="ss">
+							<div class="s">Публикации: @Model.Publications</div>
+						</div>
+						<div class="ss">
+							<div class="s">Подписчики: @Model.Subscribers</div>
+						</div>
+						<div class="ss">
+							<div class="s">Подписки: @Model.Subscribes</div>
+						</div>
+					</div>
+					<div class="sss2">
+						<div class="ss2">
+							<h6>@Model.Name</h6>
+						</div>
+						<div class="ss2">
+                        <p>@Model.UserInfo</p>
+                        </div>
+					</div>
+						<div class="ssA">
+                            @if (ViewData["I"] != "DushnilaDima")
+                            {
+	                            @if (ViewData["Desub"] == "False")
+	                            {
+		                            <form id="subscribeFormContainer" asp-action="Subscribe" asp-controller="User" method="post" data-desub="False">
+			                            <input type="hidden" name="id" value="@Model.Id" />
+			                            <button class="podp" type="submit">Подписаться</button>
+		                            </form>
+	                            }
+	                            else
+	                            {
+		                            <form id="unsubscribeFormContainer" asp-action="DeSubscribe" asp-controller="User" method="post" data-desub="True">
+			                            <input type="hidden" name="id" value="@Model.Id" />
+			                            <button class="otp" type="submit">Отписаться</button>
+		                            </form>
+	                            }
+                            }
+                        </div>
+					</div>
+			</div>
+		</div>
+	</div>
+</header>
+<hr />
+<div class="inm">
+	@foreach (var p in ViewData["Publications"] as List<Publication>)
+    {
+	    <div class="block">
+		    <a asp-action="Details" asp-route-id="@p.Id" asp-controller="Publication" class="image-container">
+			    <img class="adda" src="@p.Pictures" />
+			    <div class="overlay">
+				    <div class="fvf">
+					    <ion-icon name="heart-outline" class="fs"></ion-icon>
+					    <p class="ll">@p.LikeCount</p>
+				    </div>
+				    <ion-icon name="chatbubble-outline" class="fs"></ion-icon>
+				    <p class="ll">@p.ComentsCount</p>
+			    </div>
+		    </a>
+		    <div class="icon-container">
+			    <ion-icon class="settings" name="ellipsis-horizontal-circle-outline"></ion-icon>
+			    <div class="sub-icons">
+				    <ion-icon class="sets set-click" name="cog-outline" data-id="@p.Id"></ion-icon>
+                    <ion-icon class="dels delete-click" name="trash-outline" data-id="@p.Id"></ion-icon>
+			    </div>
+		    </div>
+		    <div class="modal edit-modal" data-id="@p.Id">
+			    <div class="modal-content edit-modal">
+				    <img class="adda adda2" src="@p.Pictures" />
+				    <form asp-controller="Publication" method="post" enctype="multipart/form-data" asp-action="Edit" data-id="@p.Id" id="edit-form">
+					    <input type="hidden" asp-for="Id" name="Id" value="@p.Id"/>
+					    <input type="hidden" asp-for="@p.LikeCount" name="LikeCount" value="@p.LikeCount"/>
+					    <input type="hidden" asp-for="@p.ComentsCount" name="ComentsCount" value="@p.ComentsCount"/>
+					    <div class="form-group">
+						    <label asp-for="@p.Pictures">Загрузите фотографию</label>
+						    <input type="file" name="uploadedFile"/>
+						    <span class="text-danger"></span>
+					    </div>
+					    <div class="form-group">
+						    <input asp-for="@p.Description" name="Description"/>
+						    <label asp-for="@p.Description">Описание</label>
+					    </div>
+					    <button type="submit" class="btn btn-primary">Сохранить</button>
+				    </form>
+				    <div class="tabs">
+					    <h6>Редактирование публикации</h6>
+					    <div class="tabs2">
+						    <button class="closeModal">Закрыть</button>
+					    </div>
+				    </div>
+			    </div>
+		    </div>
+		    <div class="modal delete-modal" data-id="@p.Id">
+			    <div class="modal-content del-modal">
+				    <img class="adda adda2" src="@p.Pictures" />
+				    <div class="tabs">
+					    <h6>Вы действительно хотите удалить публикацию?</h6>
+					    <div class="tabs2">
+						    <form asp-controller="Publication" asp-action="Delete" data-id="@p.Id">
+							    <input type="submit" value="Удалить" class="deletepubl" />
+						    </form>
+						    <button class="closeModal">Закрыть</button>
+					    </div>
+				    </div>
+			    </div>
+		    </div>
+	    </div>
+	    
+    }
+	<script>
+        const editIcons = document.querySelectorAll(".set-click");
+        const editModals = document.querySelectorAll(".edit-modal");
+        editIcons.forEach(editIcon => {
+            editIcon.addEventListener("click", () => {
+                const dataId = editIcon.getAttribute("data-id");
+                const editModal = document.querySelector(`.edit-modal[data-id="${dataId}"]`);
+                editModal.style.display = "block";
+            });
+        });
+        const deleteIcons = document.querySelectorAll(".delete-click");
+        const deleteModals = document.querySelectorAll(".delete-modal");
+        deleteIcons.forEach(deleteIcon => {
+            deleteIcon.addEventListener("click", () => {
+                const dataId = deleteIcon.getAttribute("data-id");
+                const deleteModal = document.querySelector(`.delete-modal[data-id="${dataId}"]`);
+                deleteModal.style.display = "block";
+            });
+        });
+        const closeModalButtons = document.querySelectorAll(".closeModal");
+        closeModalButtons.forEach(button => {
+            button.addEventListener("click", () => {
+                const parentModal = button.closest(".modal");
+                parentModal.style.display = "none";
+            });
+        });
+    </script>
+	<script>
+        $(document).ready(function () {
+            // Edit button click handler
+            $(".edit-button").click(function () {
+                let id = $(this).data("id");
+                let modal = $(`.edit-modal[data-modal-id="${id}"]`);
+                let imageSrc = modal.find(".adda2").attr("src");
+                let description = modal.find("input[name='Description']").val();
+				console.log('==================');
+                console.log(modal);
+				console.log(imageSrc);
+				console.log(description);
+				console.log('==================');
+                // Prepare data to be sent via AJAX
+                let data = {
+                    id: id,
+                    imageSrc: imageSrc,
+                    description: description
+                };
+    
+                $.ajax({
+                    type: "POST",
+                    url: "/Publication/Edit",
+                    data: data,
+                    success: function (data) {
+                        console.log("Ответ от сервера:", data);
+                        if (data.success) {
+                            alert(data.message);
+                            modal.hide();
+                        } else {
+                            console.error("Ошибка на сервере: " + data.message);
+                        }
+                    },
+                    error: function () {
+                        console.error("Ошибка при отправке данных на сервер");
+                    }
+                });
+            });
+    
+            // Delete button click handler
+            $(".deletepubl").on("click", function (e) {
+                e.preventDefault();
+                let id = $(this).data("id");
+                    console.log('==================');
+    				console.log(id);
+    				console.log('==================');
+                $.ajax({
+                    type: "POST",
+                    url: "/Publication/Delete",
+                    data: { id: id },
+                    success: function (data) {
+                        if (data.success) {
+                            $(`.modal[data-modal-id="${id}"]`).hide();
+                            console.log("Успешно удалено.");
+                            location.reload();
+                        } else {
+                            console.log("Ошибка при удалении публикации.");
+                        }
+                    },
+                    error: function () {
+                        console.log("Произошла ошибка при отправке запроса.");
+                    }
+                });
+            });
+        });
+    </script>
+	<script>
+        const settingsIcons = document.querySelectorAll('.settings');
+        const iconContainers = document.querySelectorAll('.icon-container');
+    
+        settingsIcons.forEach((settingsIcon, index) => {
+            settingsIcon.addEventListener('click', () => {
+                iconContainers[index].classList.toggle('active');
+            });
+        });
+    </script>
+</div>
+@section Scripts
+{
+	<script>
+    $(document).ready(function () {
+        // Обработка клика на кнопке "Подписаться"
+        $(document).on('click', '.podp', function (e) {
+            e.preventDefault();
+            let subscribeForm = $("#subscribeFormContainer");
+            $.ajax({
+                type: "POST",
+                url: subscribeForm.attr("action"),
+                data: subscribeForm.serialize(),
+                success: function (data) {
+                    if (data) {
+                        $("#subscribeFormContainer").html(data);
+						location.reload();
+                    }
+                }
+            });
+        });
+        // Обработка клика на кнопке "Отписаться"
+        $(document).on('click', '.otp', function (e) {
+            e.preventDefault();
+            let unsubscribeForm = $("#unsubscribeFormContainer");
+
+            $.ajax({
+                type: "POST",
+                url: unsubscribeForm.attr("action"),
+                data: unsubscribeForm.serialize(),
+                success: function (data) {
+                    if (data) {
+                        $("#unsubscribeFormContainer").html(data);
+						location.reload();
+                    }
+                }
+            });
+        });
+    });
+</script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+	 @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

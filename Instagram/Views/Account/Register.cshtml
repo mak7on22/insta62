@@ -1,0 +1,169 @@
+﻿@model Instagram.ViewModels.RegisterViewModel
+@{
+    ViewData["Title"] = "Register";
+}
+<head>
+	<meta charset="UTF-8">
+	<title>Instagram</title>
+	<link rel="stylesheet" href="~/css/Register.css">
+</head>
+<body>
+<form method="post" asp-controller="Account" asp-action="Register" enctype="multipart/form-data">
+	<div asp-validation-summary="ModelOnly"></div>
+		<div class="wrapper" style="display:flex;">
+			<div class="imgs" style="position: relative;width: 375px;height: 700px;">
+				<img class="phone" src="/imgInst/Phone.png" alt="instagram" style="width: 100%;height: 100%;">
+				<img class="phons" src="/imgInst/1.jpg" alt="instagram" style="position: absolute; left: 42px; top: 146px; width: 293px; z-index:-1;  height: 356px; transition: opacity 1s ease-in-out;">
+			</div>
+	<div class="header">
+		<div class="top">
+			<div class="logo">
+				<img src="~/imgInst/instagram.png" alt="instagram" style="width: 175px;">
+			</div>
+			<div class="form">
+				<div class="input_field">
+					<label asp-for="Login"></label>
+					<input type="text" asp-for="Login" placeholder="Логин" class="input" required>
+					<span asp-validation-for="Login"></span>
+				</div>
+				<div class="input_field">
+					<label asp-for="Email"></label>
+					<input type="text" asp-for="Email" placeholder="Ваш Email" class="input" required>
+					<span asp-validation-for="Email"></span>
+				</div>
+				<div class="input_field">
+					<label asp-for="Avatar"></label>
+					<input required type="file" name="uploadedFile"/>
+					<span asp-validation-for="Avatar"></span>
+				</div>
+				<div class="input_field">
+					<label asp-for="Password"></label>
+					<input type="password" asp-for="Password" placeholder="Пароль" class="input" required>
+					<span asp-validation-for="Password"></span>
+				</div>
+				<div class="input_field">
+					<label asp-for="PasswordConfirm"></label>
+					<input type="password" asp-for="PasswordConfirm" placeholder="Повторите пароль" class="input">
+					<span asp-validation-for="PasswordConfirm"></span>
+				</div>
+				<div class="input_field">
+					<label asp-for="Name"></label>
+					<input type="text" asp-for="Name" placeholder="Ваше имя" class="input">
+					<span asp-validation-for="Name"></span>
+				</div>
+				<div class="input_field">
+					<label asp-for="UserInfo"></label>
+					<input type="text" asp-for="UserInfo" placeholder="Краткая информация" class="input">
+					<span asp-validation-for="UserInfo"></span>
+				</div>
+				<div class="input_field">
+					<label asp-for="PhoneNumber"></label>
+					<input type="text" asp-for="PhoneNumber" placeholder="Ваш номер" class="input">
+					<span asp-validation-for="PhoneNumber"></span>
+				</div>
+				<div class="input_field">
+					<label asp-for="Sex"></label><br />
+					<select asp-for="Sex">
+						<option value="Male">Мужской</option>
+						<option value="Female">Женский</option>
+						<option value="Other">Другой</option>
+					</select>
+					<span asp-validation-for="Sex"></span>
+				</div>
+
+				<div><input type="submit" value="Регистрация" class="btn" /></div>
+			</div>
+			<div class="or">
+				<div class="line"></div>
+				<p>ИЛИ</p>
+				<div class="line"></div>
+			</div>
+			<div class="apps">
+				<p>Использовать приложения</p>
+				<div class="icons">
+					<a href="ms-windows-store://pdp/?productid=9nblggh5l9xt&referrer=appbadge&source=www.instagram.com&mode=mini&pos=0%2C0%2C2562%2C1380"><img src="https://static.cdninstagram.com/rsrc.php/v3/yv/r/_UbeIRgTpG-.png" alt="appstore"></a>
+					<a href="https://play.google.com/store/apps/details?id=com.instagram.android&referrer=ig_mid%3D2E0BF7C3-E249-4C6E-8989-F605C2B0C1B5%26utm_campaign%3DloginPage%26utm_content%3Dlo%26utm_source%3Dinstagramweb%26utm_medium%3Dbadge"><img src="~/imgInst/googleplay.png" alt="googleplay"></a>
+				</div>
+			</div>
+		</div>
+		</div>
+	</div>
+		<div class="footer">
+			<div class="links">
+				<ul>
+					<li><a href="https://about.instagram.com">О нас</a></li>
+					<li><a href="https://help.instagram.com">Поддержка</a></li>
+					<li><a href="https://about.instagram.com/blog/">Блог</a></li>
+					<li><a href="https://help.instagram.com">АПИ</a></li>
+					<li><a href="https://about.instagram.com/about-us/careers">Вакансии</a></li>
+					<li><a href="https://privacycenter.instagram.com/policy/?entry_point=ig_help_center_data_policy_redirect">Конфиденциальность</a></li>
+					<li><a href="https://help.instagram.com/581066165581870/">Условия</a></li>
+					<li><a href="https://www.instagram.com/explore/locations/">Места</a></li>
+					<li><a href="https://www.instagram.com/web/lite/">Instagram Lite</a></li>
+					<li><a href="https://www.threads.net/login">Threads</a></li>
+					<li><a href="https://about.meta.com/technologies/meta-verified/">Meta Verified</a></li>
+				</ul>
+			</div>
+			<div class="copyright">
+				© 2023 INSTAGRAM
+			</div>
+		</div>
+</form>
+</body>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+@* <form method="post" asp-controller="Account" asp-action="Register" enctype="multipart/form-data"> *@
+@*     <div asp-validation-summary="ModelOnly"></div> *@
+@*     <div> *@
+@*         <label asp-for="Login"></label><br /> *@
+@*         <input asp-for="Login" required/> *@
+@*         <span asp-validation-for="Login"></span> *@
+@*     </div> *@
+@*     <div> *@
+@*         <label asp-for="Email"></label><br /> *@
+@*         <input asp-for="Email" /> *@
+@*         <span asp-validation-for="Email"></span> *@
+@*     </div> *@
+@*     <div> *@
+@*         <label asp-for="Avatar" class="control-label">Загрузите фотографию</label> *@
+@*         <input required type="file" name="uploadedFile" /> *@
+@*         <span asp-validation-for="Avatar" class="text-danger"></span> *@
+@*     </div> *@
+@*     <div> *@
+@*         <label asp-for="Password"></label><br /> *@
+@*         <input asp-for="Password" /> *@
+@*         <span asp-validation-for="Password"></span> *@
+@*     </div> *@
+@*     <div> *@
+@*         <label asp-for="PasswordConfirm"></label><br /> *@
+@*         <input asp-for="PasswordConfirm" /> *@
+@*         <span asp-validation-for="PasswordConfirm"></span> *@
+@*     </div> *@
+@*     <div> *@
+@*         <label asp-for="Name"></label><br /> *@
+@*         <input asp-for="Name" /> *@
+@*         <span asp-validation-for="Name"></span> *@
+@*     </div> *@
+@*     <div> *@
+@*         <label asp-for="UserInfo"></label><br /> *@
+@*         <input asp-for="UserInfo" /> *@
+@*         <span asp-validation-for="UserInfo"></span> *@
+@*     </div> *@
+@*     <div> *@
+@*         <label asp-for="PhoneNumber"></label><br /> *@
+@*         <input asp-for="PhoneNumber" /> *@
+@*         <span asp-validation-for="PhoneNumber"></span> *@
+@*     </div> *@
+@*     <div> *@
+@*         <label asp-for="Sex"></label><br /> *@
+@*         <input asp-for="Sex" /> *@
+@*         <span asp-validation-for="Sex"></span> *@
+@*     </div> *@
+@*     <div> *@
+@*         <input type="submit" value="Регистрация" /> *@
+@*     </div> *@
+@* </form> *@
+

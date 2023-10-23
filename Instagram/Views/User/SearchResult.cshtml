@@ -1,0 +1,19 @@
+﻿@model List<Instagram.Models.User>
+
+<h2>Результаты поиска пользователей</h2>
+
+@if (Model.Any())
+{
+    <ul>
+        @foreach (var user in Model)
+        {
+            <li>
+                <a asp-controller="User" asp-action="Profile" asp-route-id="@user.Id">@user.Name</a>
+            </li>
+        }
+    </ul>
+}
+else
+{
+    <p>Пользователи не найдены.</p>
+}

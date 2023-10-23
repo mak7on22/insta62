@@ -1,0 +1,68 @@
+﻿@model Instagram.Models.User
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<head>
+    <meta charset="UTF-8">
+    <title>Instagram</title>
+    <link rel="stylesheet" href="~/css/Lks.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+</head>
+<h2>Изменение профиля</h2>
+<div class="row">
+    <div class="col-md-4">
+        <div class="dds">
+            <form method="post" asp-action="Edit" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="Id" value="@Model.Id" />
+                <div class="for">
+                    <div class="imjs">
+                        <label asp-for="Avatar" class="control-label textDel"></label>
+                        <img class="imagess" src="@Url.Content(Model.Avatar)" alt="Изображение" />
+                    </div>
+                    <div>
+                        <label class="control-label">Загрузите фотографию</label>
+                        <input type="file" name="uploadedFile" id="fileInput" />
+                        <span class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Name" class="control-label"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="UserInfo" class="control-label"></label>
+                    <input asp-for="UserInfo" class="form-control" />
+                    <span asp-validation-for="UserInfo" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Email" class="control-label"></label>
+                    <input asp-for="Email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="PhoneNumber" class="control-label"></label>
+                    <input asp-for="PhoneNumber" class="form-control" />
+                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <input type="submit" value="Сохранить" class="btn btn-success ssd" />
+                </div>
+            </form>
+            <div>
+                <a asp-action="Profile" asp-for="Id" asp-route-id="@Model.Id" class="btn btn-"value="@Model.Id" class="btn btn-primary">Назад</a>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

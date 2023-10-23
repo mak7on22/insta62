@@ -1,0 +1,19 @@
+﻿@model List<Instagram.Models.User>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Список пользователей</title>
+</head>
+<body>
+    <h2>Список пользователей</h2>
+    <ul>
+        @foreach (var user in Model)
+        {
+            <li>
+                <a asp-controller="User" asp-action="Profile" asp-route-id="@user.Id">@user.UserName</a>
+            </li>
+        }
+    </ul>
+</body>
+</html>

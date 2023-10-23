@@ -1,0 +1,475 @@
+﻿.row {
+    --bs-gutter-x: 1.5rem;
+    --bs-gutter-y: 0;
+    display: flex;
+    gap: 73px;
+    margin-top: calc(var(--bs-gutter-y) * -1);
+    margin-right: calc(var(--bs-gutter-x) * -.5);
+    margin-left: calc(var(--bs-gutter-x) * -.5);
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-content: center;
+}
+.containers, .container-fluid, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
+    width: 100%;
+    padding-right: var(--bs-gutter-x,.75rem);
+    padding-left: var(--bs-gutter-x,.75rem);
+}
+/*/ЛАЙК НИЖЕ*/
+.cont input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.cont {
+    display: block;
+    position: relative;
+    cursor: pointer;
+    user-select: none;
+    width: 40px;
+    height: 40px;
+}
+
+.cont svg {
+    position: relative;
+    top: 0;
+    left: 0;
+    transition: all 0.3s;
+    fill: #666;
+}
+
+.cont svg:hover {
+    transform: scale(1.1);
+}
+
+.cont input:checked ~ svg {
+    fill: #ff000b;
+}
+
+/*/ВЫШЕ ЛАЙК НИЖЕ ЛЕНТОЧКА*/
+.ui-bookmark {
+    --icon-size: 24px;
+    --icon-secondary-color: rgb(77, 77, 77);
+    --icon-hover-color: rgb(97, 97, 97);
+    --icon-primary-color: gold;
+    --icon-circle-border: 1px solid var(--icon-primary-color);
+    --icon-circle-size: 35px;
+    --icon-anmt-duration: 0.3s;
+    display: flex;
+    align-items: center;
+}
+
+.ui-bookmark input {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    display: none;
+}
+
+.ui-bookmark .bookmark {
+    width: var(--icon-size);
+    height: auto;
+    fill: var(--icon-secondary-color);
+    cursor: pointer;
+    -webkit-transition: 0.2s;
+    -o-transition: 0.2s;
+    transition: 0.2s;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    position: relative;
+    -webkit-transform-origin: top;
+    -ms-transform-origin: top;
+    transform-origin: top;
+}
+
+.bookmark::after {
+    content: "";
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    -webkit-box-shadow: 0 30px 0 -4px var(--icon-primary-color),
+    30px 0 0 -4px var(--icon-primary-color),
+    0 -30px 0 -4px var(--icon-primary-color),
+    -30px 0 0 -4px var(--icon-primary-color),
+    -22px 22px 0 -4px var(--icon-primary-color),
+    -22px -22px 0 -4px var(--icon-primary-color),
+    22px -22px 0 -4px var(--icon-primary-color),
+    22px 22px 0 -4px var(--icon-primary-color);
+    box-shadow: 0 30px 0 -4px var(--icon-primary-color),
+    30px 0 0 -4px var(--icon-primary-color),
+    0 -30px 0 -4px var(--icon-primary-color),
+    -30px 0 0 -4px var(--icon-primary-color),
+    -22px 22px 0 -4px var(--icon-primary-color),
+    -22px -22px 0 -4px var(--icon-primary-color),
+    22px -22px 0 -4px var(--icon-primary-color),
+    22px 22px 0 -4px var(--icon-primary-color);
+    border-radius: 50%;
+    -webkit-transform: scale(0);
+    -ms-transform: scale(0);
+    transform: scale(0);
+}
+
+.bookmark::before {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    border: var(--icon-circle-border);
+    opacity: 0;
+}
+
+/* actions */
+
+.ui-bookmark:hover .bookmark {
+    fill: var(--icon-hover-color);
+}
+
+.ui-bookmark input:checked + .bookmark::after {
+    -webkit-animation: circles var(--icon-anmt-duration)
+    cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    animation: circles var(--icon-anmt-duration)
+    cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    -webkit-animation-delay: var(--icon-anmt-duration);
+    animation-delay: var(--icon-anmt-duration);
+}
+
+.ui-bookmark input:checked + .bookmark {
+    fill: var(--icon-primary-color);
+    -webkit-animation: bookmark var(--icon-anmt-duration) forwards;
+    animation: bookmark var(--icon-anmt-duration) forwards;
+    -webkit-transition-delay: 0.3s;
+    -o-transition-delay: 0.3s;
+    transition-delay: 0.3s;
+}
+
+.ui-bookmark input:checked + .bookmark::before {
+    -webkit-animation: circle var(--icon-anmt-duration)
+    cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    animation: circle var(--icon-anmt-duration)
+    cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    -webkit-animation-delay: var(--icon-anmt-duration);
+    animation-delay: var(--icon-anmt-duration);
+}
+
+@-webkit-keyframes bookmark {
+    50% {
+        -webkit-transform: scaleY(0.6);
+        transform: scaleY(0.6);
+    }
+
+    100% {
+        -webkit-transform: scaleY(1);
+        transform: scaleY(1);
+    }
+}
+
+@keyframes bookmark {
+    50% {
+        -webkit-transform: scaleY(0.6);
+        transform: scaleY(0.6);
+    }
+
+    100% {
+        -webkit-transform: scaleY(1);
+        transform: scaleY(1);
+    }
+}
+
+@-webkit-keyframes circle {
+    from {
+        width: 0;
+        height: 0;
+        opacity: 0;
+    }
+
+    90% {
+        width: var(--icon-circle-size);
+        height: var(--icon-circle-size);
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes circle {
+    from {
+        width: 0;
+        height: 0;
+        opacity: 0;
+    }
+
+    90% {
+        width: var(--icon-circle-size);
+        height: var(--icon-circle-size);
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
+}
+
+@-webkit-keyframes circles {
+    from {
+        -webkit-transform: scale(0);
+        transform: scale(0);
+    }
+
+    40% {
+        opacity: 1;
+    }
+
+    to {
+        -webkit-transform: scale(0.8);
+        transform: scale(0.8);
+        opacity: 0;
+    }
+}
+
+@keyframes circles {
+    from {
+        -webkit-transform: scale(0);
+        transform: scale(0);
+    }
+
+    40% {
+        opacity: 1;
+    }
+
+    to {
+        -webkit-transform: scale(0.8);
+        transform: scale(0.8);
+        opacity: 0;
+    }
+}
+/*//////*/
+.chec{
+    padding: 10px;
+    display: flex;
+    gap: 10px;
+}
+.yy{
+    height: 35px;
+    width: 35px;
+}
+.rep{
+    margin-left: auto;
+}
+.card-body {
+    flex: 1 1 auto;
+    padding: 1px 1rem;
+}
+.aut{
+    gap: 2px;
+}
+.sas{
+    font-size: large;
+}
+.card-title{
+    display: flex;
+    margin: 0;
+    align-items: flex-end;
+    font-weight: 600;
+}
+.imagess{
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+}
+.textDel {
+    all: initial;
+}
+.gg{
+    margin: 8px;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+}
+.ggf{
+    margin-left: auto;
+}
+.fa {
+    width: 58px;
+    height: 32px;
+    right: 10px; /* Правое положение (или другое по вашему выбору) */
+    top: 10px; /* Верхнее положение (или другое по вашему выбору) */
+    z-index: 999; /* Положение над другими элементами, если необходимо */
+}
+.card-title {
+    display: contents;
+    margin: 0;
+    align-items: flex-end;
+    font-weight: 600;
+}
+.fgh{
+    border: 0px;
+    border-radius: 10px;
+    color: #1f1f44;
+    background-color: #eeeee424;
+    font-weight: 500;
+}
+.nn{
+    text-decoration: none;
+    color: black;
+}
+.card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border: 1px solid rgba(0,0,0,.125);
+    border-radius: 0.25rem;
+    z-index: 1;
+    margin-top: 50px;
+}
+.timeCounter p{
+    all: initial;
+    margin-bottom: 0;
+}
+.modal-open {
+    overflow: hidden;
+}
+
+
+
+
+
+.input-wrapperss {
+    position: relative;
+    padding: 0px 25px 0 25px;
+    margin: 10px 20px 10px 20px;
+    border: none;
+    display: flex;
+}
+
+.input-boxss {
+    font-size: 16px;
+    padding: 10px 0;
+    border: none;
+    color: #08AEEA;
+    width: 100%;
+    background-color: transparent;
+    outline: none;
+    
+}
+
+.underliness {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    border: none;
+    background-color: #08aeea;
+    transform: scaleX(0);
+    transition: transform 0.3s ease-in-out;
+}
+
+.input-boxss:focus + .underliness{
+    outline: none !important;
+    border: none;
+    transform: scaleX(1);
+    padding: 0px 25px 0 25px;
+}
+.gfg{
+    display: block;
+    border: none;
+    background-color: transparent;
+    font-weight: 600;
+}
+.gfg:hover{
+    color: #1155e8;
+}
+.cca{
+    display: flex;
+    flex-direction: column;
+    background-color: #bfd0d08c;
+    align-items: center;
+    margin: 100px 100px;
+    border-radius: 20px;
+    padding: 20px;
+}
+@media (min-width: 768px)
+.col-md-4 {
+    flex: none;
+    width: auto;
+}
+.bg-white {
+    --bs-bg-opacity: 0;
+    background-color: rgba(var(--bs-white-rgb),var(--bs-bg-opacity))!important;
+}
+.formss{
+    display: flex;
+    margin-top: 10px;
+}
+.load-comments-button{
+    border: none;
+    background-color: transparent;
+    font-weight: 500;
+    margin-left: 20px;
+}
+.hide-comments-button{
+    border: none;
+    background-color: transparent;
+    font-weight: 500;
+    margin-left: 20px;
+}
+.comment-avatar{
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    margin-right: 11px;
+}
+.comment-username{
+    font-weight: 700;
+}
+.oba{
+    display: flex;
+    margin: 10px 10px 10px 25px;
+    align-items: center;
+}
+.oba2{
+    display: flex;
+    flex-direction: column;
+    line-height: 1;
+}
+
+.comments-container {
+    overflow-y: auto;
+    max-height: 300px;
+    border-radius: 10px; /* Закругляем ячейку скролла */
+}
+
+.comments-container::-webkit-scrollbar {
+    width: 10px; /* Ширина скроллбара (замените по желанию) */
+}
+
+.comments-container::-webkit-scrollbar-thumb {
+    background-color: #888; /* Цвет скроллбара */
+    border-radius: 30px; /* Закругляем сам скролл */
+}
+
+.comments-container::-webkit-scrollbar-track {
+    background-color: #f1f1f1; /* Цвет фона скроллбара */
+}
+.comment-time-published{
+    margin-top: 4px;
+    font-size: small;
+    color: #a6a4a482;
+}
+
+

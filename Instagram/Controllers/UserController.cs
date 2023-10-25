@@ -85,7 +85,6 @@ namespace Instagram.Controllers
 					await _context.SaveChangesAsync();
 				}
 			}
-
 			return Json(new { success = true, subscribed = true });
 		}
 

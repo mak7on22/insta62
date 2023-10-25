@@ -147,6 +147,7 @@ namespace Instagram.Controllers
 		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> Edit([FromForm] Publication editedPublication, IFormFile uploadedFile)
 		{
+			var existingPublication = await _context.Publications.FindAsync(editedPublication.Id);
 			if (editedPublication.Id == 0 || !ModelState.IsValid)
 			{
 				return Json(new { success = false, message = "Недопустимые данные" });
@@ -159,12 +160,6 @@ namespace Instagram.Controllers
 			{
 				Directory.CreateDirectory(fullPath);
 			}
-
-			
-
-			var existingPublication = await _context.Publications.FindAsync(editedPublication.Id);
-
-
 			if (existingPublication != null)
 			{
 				existingPublication.Pictures = path;
@@ -178,7 +173,7 @@ namespace Instagram.Controllers
 				// Вернуться на страницу Profile с указанием ID пользователя
 				return RedirectToAction("Profile", "User", new { id = existingPublication.UserId });
 			}
-			return Json(new { success = false, message = "Недопустимые данные" });
+			return RedirectToAction("Profile", "User", new { id = existingPublication.UserId });
 		}
 	
 

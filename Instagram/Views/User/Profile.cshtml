@@ -36,7 +36,7 @@
 							<div class="s">Публикации: @Model.Publications</div>
 						</div>
 						<div class="ss">
-							<div class="s">Подписчики: @Model.Subscribers</div>
+							<div id="subsCount" class="s">Подписчики: @Model.Subscribers</div>
 						</div>
 						<div class="ss">
 							<div class="s">Подписки: @Model.Subscribes</div>
@@ -57,7 +57,7 @@
 	                            {
 		                            <form id="subscribeFormContainer" asp-action="Subscribe" asp-controller="User" method="post" data-desub="False">
 			                            <input type="hidden" name="id" value="@Model.Id" />
-			                            <button class="podp" type="submit">Подписаться</button>
+			                            <button class="podp" id="subsButton" type="submit">Подписаться</button>
 		                            </form>
 	                            }
 	                            else
@@ -78,7 +78,7 @@
 <div class="inm">
 	@foreach (var p in ViewData["Publications"] as List<Publication>)
     {
-	    <div class="block">
+	    <div class="block" data-id="@p.Id">
 		    <a asp-action="Details" asp-route-id="@p.Id" asp-controller="Publication" class="image-container">
 			    <img class="adda" src="@p.Pictures" />
 			    <div class="overlay">
@@ -90,16 +90,20 @@
 				    <p class="ll">@p.ComentsCount</p>
 			    </div>
 		    </a>
-		    <div class="icon-container">
-			    <ion-icon class="settings" name="ellipsis-horizontal-circle-outline"></ion-icon>
-			    <div class="sub-icons">
-				    <ion-icon class="sets set-click" name="cog-outline" data-id="@p.Id"></ion-icon>
-                    <ion-icon class="dels delete-click" name="trash-outline" data-id="@p.Id"></ion-icon>
-			    </div>
-		    </div>
+		     @if (User.Identity.IsAuthenticated && Model.Id == Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)))
+		     {
+			     <div class="icon-container">
+				     <ion-icon class="settings ssss" name="ellipsis-horizontal-circle-outline"></ion-icon>
+				     <div class="sub-icons">
+					     <ion-icon class="sets set-click ssss" name="cog-outline" data-id="@p.Id"></ion-icon>
+					     <ion-icon class="dels delete-click ssss" name="trash-outline" data-id="@p.Id"></ion-icon>
+				     </div>
+			     </div>
+		     }
 		    <div class="modal edit-modal" data-id="@p.Id">
 			    <div class="modal-content edit-modal">
 				    <img class="adda adda2" src="@p.Pictures" />
+				     <h6>Редактирование публикации</h6>
 				    <form asp-controller="Publication" method="post" enctype="multipart/form-data" asp-action="Edit" data-id="@p.Id" id="edit-form">
 					    <input type="hidden" asp-for="Id" name="Id" value="@p.Id"/>
 					    <input type="hidden" asp-for="@p.LikeCount" name="LikeCount" value="@p.LikeCount"/>
@@ -109,16 +113,15 @@
 						    <input type="file" name="uploadedFile"/>
 						    <span class="text-danger"></span>
 					    </div>
-					    <div class="form-group">
-						    <input asp-for="@p.Description" name="Description"/>
-						    <label asp-for="@p.Description">Описание</label>
-					    </div>
-					    <button type="submit" class="btn btn-primary">Сохранить</button>
+					   <div class="form-group">
+                               <textarea rows="5" cols="62" asp-for="@p.Description" name="Description" class="no-resize descriptionTextarea" data-id="@p.Id"></textarea>
+                               <label class="comm" asp-for="@p.Description"></label>
+                           </div>
+                           <button type="submit" class="btn btn-success save-button" data-id="@p.Id" disabled>Сохранить</button>
 				    </form>
 				    <div class="tabs">
-					    <h6>Редактирование публикации</h6>
 					    <div class="tabs2">
-						    <button class="closeModal">Закрыть</button>
+						    <button class="closeModal ppo">Назад</button>
 					    </div>
 				    </div>
 			    </div>
@@ -130,7 +133,7 @@
 					    <h6>Вы действительно хотите удалить публикацию?</h6>
 					    <div class="tabs2">
 						    <form asp-controller="Publication" asp-action="Delete" data-id="@p.Id">
-							    <input type="submit" value="Удалить" class="deletepubl" />
+							    <input type="button" value="Удалить" class="deletepubl btn btn-danger" />
 						    </form>
 						    <button class="closeModal">Закрыть</button>
 					    </div>
@@ -140,6 +143,27 @@
 	    </div>
 	    
     }
+	<script>
+       $(document).ready(function() {
+              const descriptionTextareas = $('.descriptionTextarea');
+              const saveButtons = $('.save-button');
+      
+              // Для каждой пары textarea и кнопки "Сохранить"
+              descriptionTextareas.each(function(index) {
+                  const descriptionTextarea = $(this);
+                  const saveButton = saveButtons.eq(index);
+                  const initialDescriptionValue = descriptionTextarea.val();
+                  descriptionTextarea.on('input', function() {
+                      // Если текст изменился, активируем кнопку "Сохранить", иначе деактывируем
+                      if (descriptionTextarea.val() !== initialDescriptionValue) {
+                          saveButton.prop('disabled', false);
+                      } else {
+                          saveButton.prop('disabled', true);
+                      }
+                  });
+              });
+          });
+    </script>
 	<script>
         const editIcons = document.querySelectorAll(".set-click");
         const editModals = document.querySelectorAll(".edit-modal");
@@ -169,6 +193,18 @@
     </script>
 	<script>
         $(document).ready(function () {
+			$('input[name="uploadedFile"]').on('change', function () {
+                    let $img = $(this).closest('.modal-content').find('img.adda.adda2');
+                    if (this.files && this.files[0]) {
+                        var reader = new FileReader();
+                        reader.onload = function (e) {
+                            $img.attr('src', e.target.result);
+                        };
+                        reader.readAsDataURL(this.files[0]);
+                    }
+                });
+			
+			
             // Edit button click handler
             $(".edit-button").click(function () {
                 let id = $(this).data("id");
@@ -191,6 +227,7 @@
                     type: "POST",
                     url: "/Publication/Edit",
                     data: data,
+
                     success: function (data) {
                         console.log("Ответ от сервера:", data);
                         if (data.success) {
@@ -206,31 +243,31 @@
                 });
             });
     
-            // Delete button click handler
-            $(".deletepubl").on("click", function (e) {
-                e.preventDefault();
-                let id = $(this).data("id");
-                    console.log('==================');
-    				console.log(id);
-    				console.log('==================');
-                $.ajax({
-                    type: "POST",
-                    url: "/Publication/Delete",
-                    data: { id: id },
-                    success: function (data) {
-                        if (data.success) {
-                            $(`.modal[data-modal-id="${id}"]`).hide();
-                            console.log("Успешно удалено.");
-                            location.reload();
-                        } else {
-                            console.log("Ошибка при удалении публикации.");
-                        }
-                    },
-                    error: function () {
-                        console.log("Произошла ошибка при отправке запроса.");
-                    }
-                });
-            });
+          $(".deletepubl").on("click", function (e) {
+              e.preventDefault();
+              let id = $(this).closest("form").data("id");
+              
+              $.ajax({
+                  type: "POST",
+                  url: "/Publication/Delete",
+                  data: { id: id },
+                  success: function (data) {
+                      if (data.success) {
+                          // Добавляем анимацию закрытия модального окна
+                          $(`.modal[data-modal-id="${id}"]`).addClass("close-animation");
+                          // Запускаем исчезновение публикации с анимацией
+                          $(`.block[data-id="${id}"]`).fadeOut(300, function () {
+                              $(this).remove(); // После завершения анимации удаляем элемент
+                          });
+                      } else {
+                          console.log("Ошибка при удалении публикации.");
+                      }
+                  },
+                  error: function () {
+                      console.log("Произошла ошибка при отправке запроса.");
+                  }
+              });
+          });
         });
     </script>
 	<script>
@@ -244,8 +281,6 @@
         });
     </script>
 </div>
-@section Scripts
-{
 	<script>
     $(document).ready(function () {
         // Обработка клика на кнопке "Подписаться"
@@ -289,4 +324,3 @@
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 	 @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}

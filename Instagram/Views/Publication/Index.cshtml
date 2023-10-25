@@ -35,7 +35,7 @@
                     </div>
                     <img src="@item.Pictures" class="card-img-top" alt="Изображение">
                     <div class="chec">
-                        <form method="post" class="chec" style="all: initial;" asp-action="Like" asp-route-publicationId="@item.Id">
+                        <form method="post" class="chec" style="all: initial;" data-id="@item.Id" asp-action="Like" asp-route-publicationId="@item.Id">
                             <label class="cont">
                                 <input type="submit" class="like-button" data-publication-id="@item.Id">
                                 <svg class="like-icon" version="1.0" viewBox="0 0 24 24" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -90,6 +90,7 @@
         }
     </div>
 </div>
+
 
 <script>
                            function updateCounter() {
